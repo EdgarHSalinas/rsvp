@@ -8,31 +8,41 @@ class App extends Component {
     guests: [
       {
         name: 'Edgar Salinas',
-        isConfirmed: false
+        isConfirmed: false,
+        isEditing: false
       },
       {
         name: 'React RSVP',
-        isConfirmed: true
+        isConfirmed: true,
+        isEditing: false
       },
       {
         name: 'Create App',
-        isConfirmed: false
+        isConfirmed: false,
+        isEditing: true
       }
     ]
   }
 
-  toggleConfirmationAt = indexToChange => 
+  toggleGuestPropertyAt = (property, indexToChange) => 
     this.setState({
       guests: this.state.guests.map((guest, index) => {
         if (index === indexToChange) {
           return {
             ...guest,
-            isConfirmed: !guest.isConfirmed
+            [property]: !guest[property]
           };
         }
         return guest;
       })
     });
+
+  // factored out toggleGuestPropertyAt to handle several events now we call below
+  toggleConfirmationAt = index => 
+    this.toggleGuestPropertyAt("isConfirmed", index);
+  
+  toggleEditingAt = index => 
+    this.toggleGuestPropertyAt("isEditing", index);
   
 
   getTotalInvited = () => this.state.guests.length;
@@ -77,7 +87,9 @@ class App extends Component {
 
       <GuestList 
         guests={this.state.guests}
-        toggleConfirmationAt={this.toggleConfirmationAt} />
+        toggleConfirmationAt={this.toggleConfirmationAt} 
+        toggleEditingAt={this.toggleEditingAt}
+      />
 
       </div>
     </div>
