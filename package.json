@@ -1,5 +1,8 @@
 {
   "name": "rsvp",
+  "description": "A web application to track your events RSVP",
+  "author": "Edgar H Salinas",
+  "license": "ISC",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
