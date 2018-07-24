@@ -2,10 +2,10 @@
 
 > React App for keeping track of invitations
 
-> Completed Image
+
 ![Alt text](src/images/rsvp-home.png?raw=true "RSVP Completed")
 
-> Components
+
 ![Alt text](src/images/structure.png?raw=true "Components")
 ```Bash
 $ git clone
