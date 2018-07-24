@@ -9,57 +9,45 @@ class App extends Component {
   state =  {
     isFiltered: false,
     pendingGuest: "",
-    guests: [
-      {
-        name: 'Edgar Salinas',
-        isConfirmed: false,
-        isEditing: false
-      },
-      {
-        name: 'React RSVP',
-        isConfirmed: true,
-        isEditing: false
-      },
-      {
-        name: 'Create App',
-        isConfirmed: false,
-        isEditing: true
-      }
-    ]
+    guests: []
   }
 
-  toggleGuestPropertyAt = (property, indexToChange) => 
-    this.setState({
-      guests: this.state.guests.map((guest, index) => {
-        if (index === indexToChange) {
-          return {
-            ...guest,
-            [property]: !guest[property]
-          };
-        }
-        return guest;
-      })
-    });
+  lastGuestId = 0;
 
-  // factored out toggleGuestPropertyAt to handle several events now we call below
-  toggleConfirmationAt = index => 
-    this.toggleGuestPropertyAt("isConfirmed", index);
+  newGuestId = () => {
+    const id = this.lastGuestId;
+    this.lastGuestId += 1;
+    return id;
+  };
 
-  removeGuestAt = index =>
-    this.setState({
-      guests: [
-        ...this.state.guests.slice(0, index),
-        ...this.state.guests.slice(index + 1)
-      ]
-    });
-  
-  toggleEditingAt = index => 
-    this.toggleGuestPropertyAt("isEditing", index);
-  
-  setNameAt = (name, indexToChange) => 
+  toggleGuestProperty = (property, id) =>
   this.setState({
-    guests: this.state.guests.map((guest, index) => {
-      if (index === indexToChange) {
+    guests: this.state.guests.map(guest => {
+      if (id === guest.id) {
+        return {
+          ...guest,
+          [property]: !guest[property]
+        };
+      }
+      return guest;
+    })
+  });
+
+toggleConfirmation = id =>
+  this.toggleGuestProperty("isConfirmed", id);
+
+removeGuest = id =>
+  this.setState({
+    guests: this.state.guests.filter(guest => id !== guest.id)
+  });
+
+toggleEditing = id =>
+  this.toggleGuestProperty("isEditing", id);
+
+setName = (name, id) =>
+  this.setState({
+    guests: this.state.guests.map(guest => {
+      if (id === guest.id) {
         return {
           ...guest,
           name
@@ -77,12 +65,14 @@ class App extends Component {
 
   newGuestSubmitHandler = e => {
     e.preventDefault();
+    const id = this.newGuestId();
     this.setState({
       guests: [
         {
           name: this.state.pendingGuest,
           isConfirmed: false,
-          isEditing: false
+          isEditing: false,
+          id
         },
         ...this.state.guests
       ],
@@ -118,10 +108,10 @@ class App extends Component {
         numberAttending={numberAttending}
         numberUnconfirmed={numberUnconfirmed}
         guests={this.state.guests}
-        toggleConfirmationAt={this.toggleConfirmationAt}
-        toggleEditingAt={this.toggleEditingAt}
-        setNameAt={this.setNameAt}
-        removeGuestAt={this.removeGuestAt}
+        toggleConfirmation={this.toggleConfirmation}
+        toggleEditing={this.toggleEditing}
+        setName={this.setName}
+        removeGuest={this.removeGuest}
         pendingGuest={this.state.pendingGuest}
       />
     </div>
