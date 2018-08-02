@@ -6,7 +6,11 @@
 ![Alt text](src/images/rsvp-home.png?raw=true "RSVP Completed")
 
 
+## Mock of React Components
+
 ![Alt text](src/images/structure.png?raw=true "Components")
+
+
 ```Bash
 $ git clone
 $ cd <name>
